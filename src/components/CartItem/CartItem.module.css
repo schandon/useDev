@@ -1,0 +1,23 @@
+
+
+.cartItems {
+  width: 70%;
+  padding: 32px;
+  background-color: var(--cinza-claro);
+}
+
+.itemDetails {
+  display: flex;
+  margin-left: 20px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cartImageContainer {
+  max-width: 170px;
+}
+
+.cartImageContainer img {
+  width: 170px;
+}
