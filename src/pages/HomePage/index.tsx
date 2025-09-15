@@ -1,19 +1,19 @@
-// import { useEffect, useState } from "react";
-// import axios from "axios";
 import Button from "../../components/Button";
 import Categories from "../../components/Categories";
 import HeroBanner from "../../components/HeroBanner";
 import Newsletter from "../../components/Newsletter";
 import ProductList from "../../components/ProductList";
 import Typography from "../../components/Typography";
-import { Category } from "../../common/types/category";
-import {
-  CATEGORIES_BASE_URL,
-  PRODUCTS_BASE_URL,
-} from "../../common/constants/endpoints";
-import { Product } from "../../common/types/product";
 import StatusHandler from "../../common/utils/statusHandler";
-import useFetch from "../../common/hooks/useFetch";
+import Http from "../../common/lib/httpClient";
+import ProductService from "../../common/services/productService";
+import useFetchProducts from "../../common/hooks/useFetchProducts";
+import CategoryService from "../../common/services/categoryService";
+import useFetchCategory from "../../common/hooks/useFetchCategory";
+
+const httpService = Http();
+const productService= ProductService(httpService);
+const categoriService= CategoryService(httpService);
 
 function HomePage() {
   const handleSubscribe = (email: string) => {
@@ -21,10 +21,10 @@ function HomePage() {
   };
 
   // Fetch de categorias
-  const { data: categoriesData, isLoading: isLoadingCategories, error: categoriesError} = useFetch<{categories: Category[]}>(CATEGORIES_BASE_URL)
+  const { categories, isLoading: isLoadingCategories, error: categoriesError} = useFetchCategory(categoriService)
 
   // Fetch de produtos
-  const { data: productsData, isLoading: isLoadingProducts, error: productsError } = useFetch<{products: Product[]}>(PRODUCTS_BASE_URL)
+  const { products, isLoading: isLoadingProducts, error: productsError } = useFetchProducts(productService)
   
   return (
     <>
@@ -45,11 +45,11 @@ function HomePage() {
       <main className="container">
         <StatusHandler isLoading={isLoadingCategories} error={categoriesError}>
           {
-            categoriesData && ( <Categories categories={categoriesData?.categories} />)
+            categories && ( <Categories categories={categories} />)
           }
         </StatusHandler>
         <StatusHandler isLoading={isLoadingProducts} error={productsError}>
-          {productsData && (<ProductList title="Promoções especiais" products={productsData?.products} />)}
+          {products && (<ProductList title="Promoções especiais" products={products} />)}
         </StatusHandler>
       </main>
       <Newsletter onSubscribe={handleSubscribe} />
