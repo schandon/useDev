@@ -67,7 +67,8 @@ function HomePage() {
         <Button
           onClick={() => console.log("ver novidades")}
           size="large"
-        >Ver as novidades!</Button>
+          text="Ver as novidades!"
+        />
       </HeroBanner>
       <main className="container">
         <StatusHandler isLoading={isLoadingCategories} error={categoriesError}>
